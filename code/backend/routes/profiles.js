@@ -1,3 +1,5 @@
+// Put this is routes/profiles.js
+
 import express from "express";
 import auth from "../middleware/auth.js";
 import { 

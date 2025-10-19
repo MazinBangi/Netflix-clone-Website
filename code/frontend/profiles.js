@@ -1,4 +1,4 @@
-// frontend/profiles.js (robust)
+// frontend/profiles.js
 const API_ORIGIN = (window.location.origin && window.location.origin !== 'null') ? window.location.origin : 'http://localhost:5000';
 const API_URL = `${API_ORIGIN}/api`;
 const token = localStorage.getItem("token") || null;
