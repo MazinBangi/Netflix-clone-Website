@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>My List - Netflix Clone</title>
+  <link rel="stylesheet" href="app.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Netflix-style Header -->
+  <header class="netflix-header">
+    <nav class="netflix-nav">
+      <div class="nav-left">
+        <img src="https://www.freepnglogos.com/uploads/netflix-logo-0.png" alt="Netflix" class="netflix-logo" />
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="browse.html" class="nav-link">Browse</a></li>
+          <li><a href="watchlist.html" class="nav-link active">My List</a></li>
+        </ul>
+      </div>
+      
+      <div class="nav-right">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input id="searchInput" type="search" placeholder="Search your list..." class="search-input" />
+        </div>
+        <div class="user-menu">
+          <span id="userStatus" class="user-status">User</span>
+          <div class="user-dropdown">
+            <button onclick="window.location.href='profiles.html'" class="dropdown-item">
+              <i class="fas fa-exchange-alt"></i> Switch Profile
+            </button>
+            <button onclick="window.location.href='manage-profiles.html'" class="dropdown-item">
+              <i class="fas fa-user-edit"></i> Manage Profiles
+            </button>
+            <hr style="margin: 0.5rem 0; border-color: #555;">
+            <button id="btnLogout" class="logout-btn">
+              <i class="fas fa-sign-out-alt"></i> Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section for Watchlist -->
+  <section class="hero-section watchlist-hero">
+    <div class="hero-content">
+      <div class="hero-info">
+        <h1 class="hero-title">My List</h1>
+        <p class="hero-description">
+          Your personal collection of movies and shows to watch later.
+        </p>
+      </div>
+    </div>
+    <div class="hero-fade"></div>
+  </section>
+
+  <!-- Watchlist Content -->
+  <main class="browse-content">
+    <!-- Stats Section -->
+    <section class="watchlist-stats">
+      <div class="stats-container">
+        <div class="stat-item">
+          <span id="totalItems" class="stat-number">0</span>
+          <span class="stat-label">Items in List</span>
+        </div>
+        <div class="stat-item">
+          <span id="totalGenres" class="stat-number">0</span>
+          <span class="stat-label">Different Genres</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+      <div class="filters-container">
+        <select id="genreSelect" class="genre-filter">
+          <option value="">All Genres</option>
+        </select>
+        <button id="btnSearch" class="search-btn">
+          <i class="fas fa-filter"></i> Filter
+        </button>
+        <button id="btnClearAll" class="clear-all-btn">
+          <i class="fas fa-trash"></i> Clear All
+        </button>
+      </div>
+    </section>
+
+    <!-- Watchlist Grid Section -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2 class="section-title">Your Movies & Shows</h2>
+      </div>
+      <div id="watchlist-grid" class="netflix-grid"></div>
+      <div id="loading" class="loading-spinner" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i> Loading your list...
+      </div>
+    </section>
+  </main>
+
+  <script src="watchlist.js"></script>
+</body>
+</html>
