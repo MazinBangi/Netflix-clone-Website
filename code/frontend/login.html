@@ -4,30 +4,763 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Sign In - Netflix Clone</title>
-  <link rel="stylesheet" href="app.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Netflix Sans', 'Helvetica Neue', Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Animated Background */
+    .bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: zoomIn 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { 
+        background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
+      }
+      50% { 
+        background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
+      }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(229, 9, 20, 0.3);
+      border-radius: 50%;
+      animation: float 15s infinite ease-in-out;
+    }
+
+    .particle:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+      animation-duration: 12s;
+    }
+
+    .particle:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      left: 80%;
+      animation-delay: 2s;
+      animation-duration: 15s;
+    }
+
+    .particle:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      top: 80%;
+      left: 20%;
+      animation-delay: 4s;
+      animation-duration: 18s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(-100px) translateX(50px) scale(1.2);
+        opacity: 0.6;
+      }
+    }
+
+    /* Header */
+    .navbar {
+      position: relative;
+      z-index: 10;
+      padding: 1.5rem 4rem;
+      animation: slideDown 0.8s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .brand__logo {
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(229, 9, 20, 0.5));
+      transition: transform 0.3s ease;
+    }
+
+    .brand__logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Auth Page */
+    .auth-page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 100px);
+      padding: 2rem 1rem;
+    }
+
+    /* Glassmorphism Card */
+    .auth-card {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      animation: fadeInUp 1s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #e50914, #ff0a16, #e50914);
+      border-radius: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+      animation: borderGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.2; }
+    }
+
+    .auth-card:hover::before {
+      opacity: 0.3;
+    }
+
+    .auth-card h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 0%, #e5e5e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    /* Form Groups */
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1.2rem 1rem;
+      background: rgba(51, 51, 51, 0.7);
+      border: 2px solid rgba(128, 128, 128, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .form-input:focus {
+      background: rgba(51, 51, 51, 0.9);
+      border-color: #e50914;
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      transition: opacity 0.3s ease;
+    }
+
+    .form-input:focus::placeholder {
+      opacity: 0;
+    }
+
+    /* Password Toggle */
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+    }
+
+    .password-toggle:hover {
+      color: #e50914;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Button Container */
+    .button-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .auth-btn {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .auth-btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-register {
+      background: linear-gradient(135deg, #666 0%, #444 100%);
+      color: #fff;
+      border: 2px solid transparent;
+    }
+
+    .btn-register:hover {
+      background: linear-gradient(135deg, #777 0%, #555 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-login {
+      background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+      color: #fff;
+      border: 2px solid transparent;
+    }
+
+    .btn-login:hover {
+      background: linear-gradient(135deg, #f40612 0%, #e50914 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(229, 9, 20, 0.4);
+    }
+
+    .auth-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .auth-btn.loading {
+      pointer-events: none;
+    }
+
+    .auth-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Feedback Message */
+    #feedback {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      animation: slideIn 0.3s ease;
+      display: none;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #feedback.success {
+      background: rgba(70, 211, 105, 0.2);
+      border: 1px solid rgba(70, 211, 105, 0.5);
+      color: #46d369;
+    }
+
+    #feedback.error {
+      background: rgba(229, 9, 20, 0.2);
+      border: 1px solid rgba(229, 9, 20, 0.5);
+      color: #e50914;
+    }
+
+    /* Back Link */
+    .back-link {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .back-link a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-link a:hover {
+      color: #e50914;
+      transform: translateX(-5px);
+    }
+
+    /* Additional Info */
+    .auth-info {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .auth-info p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem 1.5rem;
+      }
+
+      .brand__logo {
+        width: 120px;
+      }
+
+      .auth-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+
+      .auth-card h2 {
+        font-size: 1.6rem;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 1.5rem 1rem;
+      }
+
+      .form-input {
+        padding: 1rem 0.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <!-- Animated Background -->
+  <div class="bg-container">
+    <img src="https://assets.nflxext.com/ffe/siteui/vlv3/fc164b4b-f085-44ee-bb7f-ec7df8539eff/d23a1608-7d90-4da1-93d6-bae2fe60a69b/IN-en-20230814-popsignuptwoweeks-perspective_alpha_website_large.jpg" alt="Background" class="bg-image">
+    <div class="bg-overlay"></div>
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
   <header class="navbar">
     <img src="https://www.freepnglogos.com/uploads/netflix-logo-0.png" alt="Netflix" class="brand__logo"/>
   </header>
 
+  <!-- Auth Page -->
   <main class="auth-page">
     <div class="auth-card">
       <h2>Sign In / Register</h2>
-      <input id="email" type="email" placeholder="Email or phone number" required />
-      <input id="password" type="password" placeholder="Password" required />
-      <div class="row">
-        <button id="btnRegister" type="button">Register</button>
-        <button id="btnLogin" type="button">Sign In</button>
+      
+      <form id="authForm">
+        <div class="form-group">
+          <input 
+            id="email" 
+            type="email" 
+            class="form-input"
+            placeholder="Email or phone number" 
+            required 
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="form-group">
+          <input 
+            id="password" 
+            type="password" 
+            class="form-input"
+            placeholder="Password" 
+            required 
+            autocomplete="current-password"
+          />
+          <button type="button" class="password-toggle" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+
+        <div class="button-row">
+          <button id="btnRegister" type="button" class="auth-btn btn-register">
+            <span class="btn-text">Register</span>
+          </button>
+          <button id="btnLogin" type="button" class="auth-btn btn-login">
+            <span class="btn-text">Sign In</span>
+          </button>
+        </div>
+
+        <div id="feedback"></div>
+
+        <div class="auth-info">
+          <p>New to Netflix? Register to create an account.<br>Already have an account? Sign in to continue.</p>
+        </div>
+      </form>
+
+      <div class="back-link">
+        <a href="index.html">
+          <i class="fas fa-arrow-left"></i>
+          Back to Home
+        </a>
       </div>
-      <p id="feedback" style="display: none;"></p>
-      <p><a href="index.html">Back to Home</a></p>
     </div>
   </main>
 
-  <script src="login.js"></script>
+  <script>
+    // Login/Register functionality
+    const API_URL = "/api";
+
+    // DOM elements
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const btnLogin = document.getElementById("btnLogin");
+    const btnRegister = document.getElementById("btnRegister");
+    const feedback = document.getElementById("feedback");
+    const togglePassword = document.getElementById("togglePassword");
+    const authForm = document.getElementById("authForm");
+
+    // Password toggle functionality
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      
+      const icon = togglePassword.querySelector("i");
+      icon.classList.toggle("fa-eye");
+      icon.classList.toggle("fa-eye-slash");
+    });
+
+    // Show feedback message
+    function showFeedback(message, isError = false) {
+      feedback.textContent = message;
+      feedback.className = isError ? "error" : "success";
+      feedback.style.display = "block";
+      
+      // Auto-hide success messages after 3 seconds
+      if (!isError) {
+        setTimeout(() => {
+          feedback.style.display = "none";
+        }, 3000);
+      }
+    }
+
+    // Clear feedback
+    function clearFeedback() {
+      feedback.style.display = "none";
+      feedback.textContent = "";
+    }
+
+    // Show loading state
+    function setLoadingState(button, isLoading = true) {
+      if (isLoading) {
+        button.classList.add("loading");
+        button.disabled = true;
+        const textSpan = button.querySelector(".btn-text");
+        if (textSpan) textSpan.style.opacity = "0";
+      } else {
+        button.classList.remove("loading");
+        button.disabled = false;
+        const textSpan = button.querySelector(".btn-text");
+        if (textSpan) textSpan.style.opacity = "1";
+      }
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Validate form inputs
+    function validateInputs() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      if (!email || !password) {
+        showFeedback("Please fill in all fields", true);
+        return false;
+      }
+      
+      if (!isValidEmail(email)) {
+        showFeedback("Please enter a valid email address", true);
+        return false;
+      }
+      
+      if (password.length < 6) {
+        showFeedback("Password must be at least 6 characters long", true);
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Register user
+    async function registerUser() {
+      if (!validateInputs()) return;
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      try {
+        setLoadingState(btnRegister, true);
+        clearFeedback();
+        
+        const response = await fetch(`${API_URL}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          showFeedback("Registration successful! You can now log in.");
+          emailInput.value = "";
+          passwordInput.value = "";
+        } else {
+          showFeedback(data.message || "Registration failed", true);
+        }
+      } catch (error) {
+        console.error("Registration error:", error);
+        showFeedback("Network error. Please try again.", true);
+      } finally {
+        setLoadingState(btnRegister, false);
+      }
+    }
+
+    // Login user
+    async function loginUser() {
+      if (!validateInputs()) return;
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      try {
+        setLoadingState(btnLogin, true);
+        clearFeedback();
+        
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Store the token
+          localStorage.setItem("token", data.token);
+          
+          // Clear any existing profile selection
+          localStorage.removeItem("currentProfileId");
+          localStorage.removeItem("currentProfileName");
+          
+          showFeedback("Login successful! Redirecting...");
+          
+          setTimeout(() => {
+            window.location.href = "profiles.html";
+          }, 1500);
+        } else {
+          showFeedback(data.message || "Login failed", true);
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        showFeedback("Network error. Please try again.", true);
+      } finally {
+        setLoadingState(btnLogin, false);
+      }
+    }
+
+    // Event listeners
+    btnRegister.addEventListener("click", registerUser);
+    btnLogin.addEventListener("click", loginUser);
+
+    // Enter key submission
+    [emailInput, passwordInput].forEach(input => {
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          loginUser();
+        }
+      });
+    });
+
+    // Clear feedback when user starts typing
+    [emailInput, passwordInput].forEach(input => {
+      input.addEventListener("input", clearFeedback);
+    });
+
+    // Add input animation effects
+    [emailInput, passwordInput].forEach(input => {
+      input.addEventListener("focus", () => {
+        input.parentElement.style.transform = "scale(1.02)";
+      });
+      
+      input.addEventListener("blur", () => {
+        input.parentElement.style.transform = "scale(1)";
+      });
+    });
+
+    // Check if user is already logged in
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        // User is already logged in, redirect to profiles page
+        window.location.href = "profiles.html";
+      }
+    });
+  </script>
 </body>
 </html>
