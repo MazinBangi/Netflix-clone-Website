@@ -219,19 +219,22 @@
           <input id="searchInput" type="search" placeholder="Titles, people, genres" class="search-input" />
         </div>
         <div class="user-menu">
-          <span id="userStatus" class="user-status">User</span>
-          <div class="user-dropdown">
-            <button onclick="window.location.href='profiles.html'" class="dropdown-item">
-              <i class="fas fa-exchange-alt"></i> Switch Profile
-            </button>
-            <button onclick="window.location.href='manage-profiles.html'" class="dropdown-item">
-              <i class="fas fa-user-edit"></i> Manage Profiles
-            </button>
-            <hr style="margin: 0.5rem 0; border-color: #555;">
-            <button id="btnLogout" class="logout-btn">
-              <i class="fas fa-sign-out-alt"></i> Sign out
-            </button>
-          </div>
+          <span id="userStatus" class="user-status">
+            <i class="fas fa-user"></i> Profile
+        </span>
+      <div class="user-dropdown">
+    <button onclick="window.location.href='profiles.html'" class="dropdown-item">
+      <i class="fas fa-exchange-alt"></i> Switch Profile
+    </button>
+    <button onclick="window.location.href='manage-profiles.html'" class="dropdown-item">
+      <i class="fas fa-user-edit"></i> Manage Profiles
+    </button>
+    <hr>
+    <button id="btnLogout" class="logout-btn">
+      <i class="fas fa-sign-out-alt"></i> Sign out of Netflix
+    </button>
+  </div>
+</div>
         </div>
       </div>
     </nav>

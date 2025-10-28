@@ -17,27 +17,31 @@
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      background: #141414;
+      background: #340205;
+      position: relative;
     }
 
     .profiles-header {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
     }
 
     .profiles-title {
       font-size: 3.5rem;
-      font-weight: 400;
+      font-weight: 500;
       color: #fff;
       margin-bottom: 0.5rem;
+      letter-spacing: 1px;
     }
 
     .profiles-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
       gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 1000px;
+      margin: 0 auto 3rem;
+      width: 100%;
+      justify-content: center;
     }
 
     .profile-card {
@@ -46,18 +50,19 @@
       align-items: center;
       cursor: pointer;
       transition: all 0.3s ease;
+      position: relative;
     }
 
     .profile-card:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
 
     .profile-avatar {
       width: 150px;
       height: 150px;
       background: #333;
-      border: 4px solid transparent;
-      border-radius: 8px;
+      border: 3px solid transparent;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -69,18 +74,20 @@
     }
 
     .profile-card:hover .profile-avatar {
-      border-color: #fff;
+      border-color: #e50914;
     }
 
     .profile-avatar.add-profile {
-      background: #444;
+      background: #1f1f1f;
       font-size: 5rem;
       color: #808080;
+      border: 3px dashed #808080;
     }
 
     .profile-card:hover .profile-avatar.add-profile {
-      background: #555;
+      background: #2a2a2a;
       color: #fff;
+      border-color: #fff;
     }
 
     .profile-name {
@@ -88,6 +95,7 @@
       font-size: 1.3rem;
       text-align: center;
       transition: color 0.3s ease;
+      font-weight: 400;
     }
 
     .profile-card:hover .profile-name {
@@ -95,20 +103,21 @@
     }
 
     .manage-profiles-btn {
-      margin-top: 3rem;
+      margin-top: 2rem;
       padding: 0.75rem 2rem;
       background: transparent;
       border: 1px solid #808080;
       color: #808080;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       letter-spacing: 2px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-transform: uppercase;
+      font-weight: 500;
     }
 
     .manage-profiles-btn:hover {
-      border-color: #fff;
+      border-color: #e50914;
       color: #fff;
     }
 
@@ -117,6 +126,13 @@
       padding: 3rem;
       font-size: 1.5rem;
       color: #999;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #808080;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
     }
 
     @media (max-width: 768px) {
@@ -138,17 +154,62 @@
       .profile-name {
         font-size: 1rem;
       }
+
+      .manage-profiles-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .profiles-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .profile-avatar {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    /* Netflix header styling */
+    .netflix-header {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background: transparent;
+    }
+
+    .netflix-nav {
+      padding: 1rem 4rem;
+    }
+
+    .netflix-logo {
+      width: 120px;
+      height: auto;
+      filter: brightness(0) invert(1);
     }
   </style>
 </head>
 <body>
-  <div class="profiles-page">
+  <!-- Netflix Header -->
+  <header class="netflix-header">
+    <nav class="netflix-nav">
+      <div class="nav-left">
+        <img src="https://www.freepnglogos.com/uploads/netflix-logo-0.png" alt="Netflix" class="netflix-logo"/>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Profiles Content -->
+  <main class="profiles-page">
     <div class="profiles-header">
       <h1 class="profiles-title">Who's watching?</h1>
     </div>
 
     <div id="profiles-grid" class="profiles-grid">
-      <!-- Profiles will be loaded here -->
+      <!-- Profiles will be loaded dynamically by profiles.js -->
     </div>
 
     <div id="loading" class="loading-spinner" style="display: none;">
@@ -158,7 +219,7 @@
     <button class="manage-profiles-btn" onclick="window.location.href='manage-profiles.html'">
       Manage Profiles
     </button>
-  </div>
+  </main>
 
   <script src="profiles.js"></script>
 </body>
